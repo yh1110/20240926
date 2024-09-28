@@ -14,7 +14,6 @@ const main = async () => {
     });
 
     //#######
-    // (await client.getMyPosts({ number: 1 })).posts[0].user?.postsCount;
     const postCount: number =
         (await client.getMyPosts({ number: 1 })).posts[0].user?.postsCount ?? 0;
     const number: number | undefined = 20;
@@ -27,7 +26,7 @@ const main = async () => {
             fromPostId,
         });
         const myPostsTextsData: string[] = myPosts.posts.map((post) => {
-            // fromPostId = post.id;
+            fromPostId = post.id;
             if (!post.groupId && !("inReplyTo" in post) && post.postType === "text") {
                 const text: string = post.text ?? "";
                 return text;
@@ -35,16 +34,11 @@ const main = async () => {
                 return "";
             }
         });
-        let m = 0;
-        while (m < number) {
-            fromPostId = myPosts.posts[m].id;
-            ++m;
-        }
         const textsDatas: string[] = myPostsTextsData.filter((post) => post !== "");
         myPostsTexts.push(...textsDatas);
     }
     //###############
-    console.log(myPostsTexts);
+    console.log(myPostsTexts); //debug
 
     //誰にブロックされているか確認
     // const blockUserIds = await client.getBlockedUserIds();
